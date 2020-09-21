@@ -33,10 +33,14 @@ class Chat extends Component {
       text: inputText,
       role: ROLE.CUSTOMER,
     };
+    const currentMessages = this.state.messages;
+    let updatedMessages = currentMessages.concat(customerMessage);
+
     const answerMessage = answersData.find((answer) => answer.tags.includes(inputText));
-    const messageDialog = [customerMessage, answerMessage];
-    const oldMessages = this.state.messages;
-    const updatedMessages = oldMessages.concat(messageDialog);
+    if (answerMessage !== undefined) {
+      updatedMessages = updatedMessages.concat(answerMessage);
+    }
+
     this.setState({
       messages: updatedMessages,
     });
