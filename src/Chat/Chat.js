@@ -5,6 +5,7 @@ import ChatBox from './ChatBox/ChatBox';
 import ChatInput from './ChatInput/ChatInput';
 import shopData from '../data/shop.json';
 import answersData from '../data/answers.json';
+import { ROLE } from '../constants';
 
 class Chat extends Component {
   constructor(props, context) {
@@ -27,7 +28,19 @@ class Chat extends Component {
     }, 1000);
   }
 
-  handleInputSubmit = () => {};
+  handleInputSubmit = (inputText) => {
+    const customerMessage = {
+      text: inputText,
+      role: ROLE.CUSTOMER,
+    };
+    const answerMessage = answersData.find((answer) => answer.tags.includes(inputText));
+    const messageDialog = [customerMessage, answerMessage];
+    const oldMessages = this.state.messages;
+    const updatedMessages = oldMessages.concat(messageDialog);
+    this.setState({
+      messages: updatedMessages,
+    });
+  };
 
   render() {
     const { shop, messages } = this.state;
